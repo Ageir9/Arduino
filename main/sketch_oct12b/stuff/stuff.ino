@@ -9,8 +9,10 @@ int limit;
 int co_value;
 #include <SPI.h>
 #include <Ethernet.h>
+#include <EthernetUdp.h> 
 
 int mq3_analogPin = A0;
+
 
 
 byte mac[] = {
@@ -18,7 +20,14 @@ byte mac[] = {
 };
 IPAddress ip(10,220,216,200);
 
-EthernetServer server(80);
+unsigned int localPort = 8888;
+
+char packetBuffer[UDP_TX_PACKET_MAX_SIZE]; 
+char  ReplyBuffer[] = "Aknow";       
+
+EthernetUDP Udp;
+
+//EthernetServer server(80);
 
 void setup() {
  
@@ -28,7 +37,8 @@ void setup() {
   }
 
   Ethernet.begin(mac, ip);
-  server.begin();
+  Udp.begin(localport);
+  //server.begin();
   //Serial.print("server is at ");
   //Serial.println(Ethernet.localIP());
 
@@ -53,7 +63,7 @@ void setup() {
 }//end setup
 
 void loop() {
-  EthernetClient client = server.available();
+ /* EthernetClient client = server.available();
   if (client) {
     Serial.println("new client");
  
@@ -103,7 +113,7 @@ void loop() {
     Serial.println("client disconnected");
   }
   //end while loop
-
+*/
  //More Mad Hacking Below
  co_value = analogRead(CO_analogPin);  
   // READ DATA
@@ -139,9 +149,33 @@ void loop() {
     tone(8, 494, 500);
   if(co_value > 100)
     tone(8, 494, 500);
-  
+//Byrjun á UDP
+    
+  int packetSize = Udp.parsePacket();
+  if (packetSize) {
+    Serial.print("Received packet of size ");
+    Serial.println(packetSize);
+    Serial.print("From ");
+    IPAddress remote = Udp.remoteIP();
+    for (int i = 0; i < 4; i++) {
+      Serial.print(remote[i], DEC);
+      if (i < 3) {
+        Serial.print(".");
+      }
+    }
+    Serial.print(", port ");
+    Serial.println(Udp.remotePort());
+
+    // read the packet into packetBufffer
+    Udp.read(packetBuffer, UDP_TX_PACKET_MAX_SIZE);
+    Serial.println("Contents:");
+    Serial.println(packetBuffer);
+
+    Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
+    Udp.write(ReplyBuffer);
+    Udp.endPacket();
+  }
 delay(1000);  
 //These guys are insane hackers
-//haukur plis
 }//end loop
 
