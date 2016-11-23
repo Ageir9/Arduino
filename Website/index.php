@@ -31,28 +31,31 @@
                 exit;
             }
 
-            // SQL query
-            $querySQL = mysqli_connect($db_server, $db_username, $db_password, $db_name);
+            // SQL connect
+            $con = mysqli_connect($db_server, $db_username, $db_password, $db_name);
 
-            // Loop the recordset $rs
+            // Execute the query (the recordset $rs contains the result)
+            $result = mysqli_query($con, "SELECT * FROM value");
+
+            // Loop the recordset $result
             // Each row will be made into an array ($row) using mysql_fetch_array
-            /*
-            while($row = mysqli_fetch_array($rs)) {
+            
+            while($row = mysqli_fetch_array($result)) {
 
-               // Write the value of the column FirstName (which is now in the array $row)
-              echo $row['FirstName'] . "<br />";
+               // Write the value of the column 'id' (which is now in the array $row)
+              echo $row['id'] . "<br />";
               }
 
             // Close the database connection
-            mysqli_close();
+            mysqli_close($con);
             $CO_value = 14;
             $TEMP_value = 13;
             $HUMIDITY_value = 12;
+            $Date = "23.11.2016";
             echo "<tr><td>" . $Date . "</td> 
                   <td>" . $TEMP_value . "</td> 
                   <td>" . $HUMIDITY_value . "</td>
                   <td>" . $CO_value . "</td></tr>";
-            */
             ?>
         </tr>
         </table>
