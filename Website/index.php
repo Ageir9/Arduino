@@ -20,31 +20,31 @@
             $db_server = "tsuts.tskoli.is";
             $db_username = "2411972479";
             $db_password = "mypassword";
+            $db_name = "2411972479_rob";
+
             // Connect to database server
-            $link = mysql_connect($db_server, $db_username, $db_password);
+            $link = mysqli_connect($db_server, $db_username, $db_password, $db_name);
             if (!$link) {
-                die('Could not connect: ' . mysql_error());
+                echo "Error: Unable to connect to MySQL." . PHP_EOL;
+                echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+                echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
+                exit;
             }
 
-            // Select database
-            mysql_select_db("2411972479_rob") or die(mysql_error());
-
             // SQL query
-            $querySQL = "SELECT * FROM value";
-
-            // Execute the query (the recordset $rs contains the result)
-            $rs = mysql_query($querySQL);
+            $querySQL = mysqli_connect($db_server, $db_username, $db_password, $db_name);
 
             // Loop the recordset $rs
             // Each row will be made into an array ($row) using mysql_fetch_array
-            while($row = mysql_fetch_array($rs)) {
+            /*
+            while($row = mysqli_fetch_array($rs)) {
 
                // Write the value of the column FirstName (which is now in the array $row)
               echo $row['FirstName'] . "<br />";
               }
 
             // Close the database connection
-            mysql_close();
+            mysqli_close();
             $CO_value = 14;
             $TEMP_value = 13;
             $HUMIDITY_value = 12;
@@ -52,8 +52,11 @@
                   <td>" . $TEMP_value . "</td> 
                   <td>" . $HUMIDITY_value . "</td>
                   <td>" . $CO_value . "</td></tr>";
+            */
             ?>
         </tr>
         </table>
+        <canvas id="myChart" width="400" height="400"></canvas>
+        <script type="text/javascript" src="main.js"></script>
     </body>
 </html>
