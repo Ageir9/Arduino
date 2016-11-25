@@ -3,6 +3,12 @@
     <head>
     <title>/iVjLZDDc</title>
         <meta charset="utf-8">
+        <meta name="theme-color" content="#ffffff">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="favicon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="/manifest.json">
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
         <link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
         <link rel="stylesheet" type="text/css" href="ct.css">
     </head>
@@ -11,9 +17,11 @@
         <table id="t101">
         <tr>
             <th>Date</th>
-            <th>Temperature (°C)</th>
+            <th>Time</th>
             <th>Humidity (%)</th> 
+            <th>Temperature (°C)</th>
             <th>CO level (ppm)</th>
+            <th>ID</th>
         </tr>
         <tr>
             <?php
@@ -37,15 +45,14 @@
             // Execute the query (the recordset $rs contains the result)
             $result = mysqli_query($con, "SELECT * FROM value");
 
-            //Búa til töflu
-            echo "<tr>";
-
             // Loop the recordset $result
             // Each row will be made into an array ($row) using mysql_fetch_array
             while($row = mysqli_fetch_array($result)) {
 
-               // Write the value of the column 'id' (which is now in the array $row)
-              echo "<td>" . $row['id'] . "</td>";
+                // Write the value of the column 'id' (which is now in the array $row)
+                foreach($result as $value){
+                    echo "<tr><td>" . $value['Date'] . "<td>" . $value['Tími'] . "<td>" . $value['HUMIDITY'] . "<td>" . $value['TEMP'] . "<td>" . $value['CO'] . "<td>" . $value['id'] . "</td><tr>";
+                }
             }
             //loka töflunni
             echo "</tr>";
