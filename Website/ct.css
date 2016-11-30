@@ -1,9 +1,22 @@
-table, td , th{
+table, td {
     width: 50%;
-    border: 1px solid cornflowerblue;
+    border: 0px solid cornflowerblue;
     color: black;
 }
-body {
-    border-width: 2px;
-    border-color: black;
+body{
+    background-color: aliceblue;
+    margin-left: 5%;
+}
+#container-current{
+    text-align: center;
+    font-weight: bolder;
+    text-align: center;
+}
+th #container-current{
+    text-align="center";
+    font-size: 16px;
+    column-span:all;
+}
+coval {
+    margin-left: 80px;
 }
