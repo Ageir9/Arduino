@@ -12,10 +12,11 @@
         <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
         <!--libraries-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css" />
+        <link rel="stylesheet" type="text/css" href="ct.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="ct.css">
+        
     </head>
     <body>
         <?php
@@ -61,22 +62,42 @@
         ?>
         <div id="container-current">
             <h1>Current values</h1>
-            <table id="t2" align="center">
-                <tr>
-                    <th>Last check</th>
-                    <th>Temperature</th>
-                    <th>Humidity</th>
-                    <th id="coval">CO</th>
-                </tr>
-                <tr>
-                    <?php
-                    echo "<th>" . substr($value['Date'], 0 , -3) . "</th><th>" . $value['TEMP'] . "</th><th>" . $value['HUMIDITY'] . "</th><th>" . $value['CO'] . "</th>";
-                    ?>
-                </tr>
+            <table class="ui orange fixed celled table">
+                <thead>
+                    <tr>
+                        <th>Last check</th>
+                        <th>Temperature</th>
+                        <th>Humidity</th>
+                        <th>CO</th>
+                    </tr>
+                    <tr>
+                        <?php
+                        //substring til að taka burt sekúndur, prentar út
+                        echo '<th>' . substr($value['Date'], 0 , -3) . '</th><th>';
+                        //Setur warning ef eitthvað er of hátt.
+                        if($value['TEMP'] >= 40){
+                            echo '<i class="attention icon"></i>' . $value['TEMP'] . '°C </th><th>';
+                        } else{
+                            echo $value['TEMP'] . '°C</th><th>';
+                        }
+                        if($value['HUMIDITY'] >= 80){
+                            echo '<i class="attention icon"></i>' . $value['HUMIDITY'] . '% </th><th>';
+                        } else{
+                            echo $value['HUMIDITY'] . '% </th><th>';
+                        }
+                        if($value['CO'] >= 150){
+                            echo '<i class="attention icon"></i>' . $value['CO'] . ' ppm </th>';
+                        } else{
+                            echo $value['CO'] . ' ppm </th>';
+                        }
+                        
+                        //. $value['TEMP'] . "°C</th><th>" . $value['HUMIDITY'] . "%</th><th>" . $value['CO'] . " ppm</th>";
+                        ?>
+                    </tr>
+                </thead>
             </table>
         </div>
-        
-        
+        <!--
         <h3>Recent values</h3>
         <table id="t101">
         <tr>
@@ -87,25 +108,27 @@
             <th>ID</th>
         </tr>
         <tr>
+        -->
             <?php
-
             // Keyrir query. $sqlresult geymir nidurstoduna
-            $sqlresult = mysqli_query($con, "SELECT * FROM value");
+            
+            //HÉRNA ER GÖMUL TAFLA FYRIR DEBUGGING
+            /*$sqlresult = mysqli_query($con, "SELECT * FROM value");
             // Loopar úr $sqlresult
             // Hvert row verður gert að array ($row) í gegnum mysql_fetch_array
             while($row = mysqli_fetch_array($sqlresult)) {
                 // Skrifar út gildi (sem er núna í $row)
                 foreach($sqlresult as $value){
-                    echo "<tr><td>" . $value['Date']. "<td>" . $value['HUMIDITY'] . "<td>" . $value['TEMP'] . "<td>" . $value['CO'] . "<td>" . $value['id'] . "</td><tr>";
+                    echo "<tr><td>" . substr($value['Date'], 0 , -3) . "<td>" . $value['HUMIDITY'] . "<td>" . $value['TEMP'] . "<td>" . $value['CO'] . "<td>" . $value['id'] . "</td><tr>";
                     echo '<script type="text/javascript">console.log("table loop");</script>';
                  }
             }
             //loka töflunni
-            echo "</tr>";
+            echo "</tr></table>";
+            */
             
-            // Keyrir query aftur til ad byrja fra byrjun
+            // Keyrir query aftur til ad resetta. Skítafix.
             $sqlresult = mysqli_query($con, "SELECT * FROM value");
-            //Setur allt i array
             $response = array();
             $posts = array();
             while($row = mysqli_fetch_array($sqlresult))
@@ -115,11 +138,10 @@
                 $HUMIDITY=$row['HUMIDITY'];
                 $DATE=$row['Date'];
                 $ID=$row['id'];
-                
+                //býr til array
                 $posts[] = array('CO'=> $CO, 'TEMP'=> $TEMP, 'HUMIDITY'=> $HUMIDITY, 'Date'=> $DATE, 'id'=> $ID);
             }
             $response['posts'] = $posts;
-            
             //Býr til .json file og skrifar í hann
             $fp = fopen('results.json', 'w');
             fwrite($fp, json_encode($response));
@@ -128,7 +150,5 @@
             // Close the database connection
             mysqli_close($con);
             ?>
-        </tr>
-        </table>
     </body>
 </html>
