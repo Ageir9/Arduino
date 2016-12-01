@@ -15,9 +15,7 @@
         <!--libraries-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css" />
         <link rel="stylesheet" type="text/css" href="ct.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/jq-2.2.0,dt-1.10.11,r-2.0.2/datatables.min.css"/>
     </head>
     <body>
         <?php
@@ -97,6 +95,36 @@
                 </thead>
             </table>
         </div>
+        
+        <!-- 
+
+        Jahni insertaðu grafinu þínu hingað ( ͡° ͜ʖ ͡°)
+
+        -->
+        
+        <div id="filter-by-date">
+            <h4>Search:</h4><input v-model="name">
+        </div>
+        <table id="Tabledisplay" class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Temperature</th>
+                        <th>Humidity</th>
+                        <th>CO</th>
+                    </tr>
+                </thead>
+            <tbody>
+                <tr v-for="value in output | filterBy Date in 'Date' 'TEMP' 'HUMIDITY' 'CO' ">
+                    <td>{{values.Date}}</td>
+                    <td>{{values.TEMP}}</td>
+                    <td>{{values.HUMIDITY}}</td>
+                    <td>{{values.CO}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        
         <?php
         // Keyrir query. $sqlresult geymir nidurstoduna
         $sqlresult = mysqli_query($con, "SELECT * FROM value");
@@ -114,12 +142,17 @@
         }
         $response['values'] = $posts;
         //Býr til .json file og skrifar í hann
-        $fp = fopen('results.json', 'w');
+        $fp = fopen('js/results.json', 'w');
         fwrite($fp, json_encode($response));
         fclose($fp);
 
         // Close the database connection
         mysqli_close($con);
         ?>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/core.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     </body>
 </html>
