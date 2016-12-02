@@ -95,36 +95,6 @@
                 </thead>
             </table>
         </div>
-        
-        <!-- 
-
-        Jahni insertaðu grafinu þínu hingað ( ͡° ͜ʖ ͡°)
-
-        -->
-        
-        <div id="filter-by-date">
-            <h4>Search:</h4><input v-model="name">
-        </div>
-        <table id="Tabledisplay" class="ui celled table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Temperature</th>
-                        <th>Humidity</th>
-                        <th>CO</th>
-                    </tr>
-                </thead>
-            <tbody>
-                <tr v-for="value in output | filterBy Date in 'Date' 'TEMP' 'HUMIDITY' 'CO' ">
-                    <td>{{values.Date}}</td>
-                    <td>{{values.TEMP}}</td>
-                    <td>{{values.HUMIDITY}}</td>
-                    <td>{{values.CO}}</td>
-                </tr>
-            </tbody>
-        </table>
-
-        
         <?php
         // Keyrir query. $sqlresult geymir nidurstoduna
         $sqlresult = mysqli_query($con, "SELECT * FROM value");
@@ -149,10 +119,40 @@
         // Close the database connection
         mysqli_close($con);
         ?>
+        
+        <!-- 
+
+        Jahni insertaðu grafinu þínu hingað ( ͡° ͜ʖ ͡°)
+
+        -->
+        
+        <div id="filter-by-date">
+            <h4>Search:</h4><input v-model="name">
+        </div>
+        <table id="Tabledisplay" class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Temperature</th>
+                        <th>Humidity</th>
+                        <th>CO</th>
+                    </tr>
+                </thead>
+            <tbody>
+                <tr v-for="value in output | filterBy name in 'Date' 'TEMP' 'HUMIDITY' 'CO' ">
+                    <td>{{values.Date}}</td>
+                    <td>{{values.TEMP}}</td>
+                    <td>{{values.HUMIDITY}}</td>
+                    <td>{{values.CO}}</td>
+                </tr>
+            </tbody>
+        </table>
+    <script type="text/javascript" src="js/vue.js"></script>    
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/core.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="http://code.jquery.com/jquery-3.1.1.js"></script>
+        <script type="application/javascript" src="js/results.json"></script>
+        <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
     </body>
 </html>
