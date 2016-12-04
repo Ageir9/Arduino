@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css" />
         <link rel="stylesheet" type="text/css" href="ct.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/jq-2.2.0,dt-1.10.11,r-2.0.2/datatables.min.css"/>
+        <script type="application/javascript" src="js/main.js"></script>
     </head>
     <body>
         <?php
@@ -95,36 +96,6 @@
                 </thead>
             </table>
         </div>
-        
-        <!-- 
-
-        Jahni insertaðu grafinu þínu hingað ( ͡° ͜ʖ ͡°)
-
-        -->
-        
-        <div id="filter-by-date">
-            <h4>Search:</h4><input v-model="name">
-        </div>
-        <table id="Tabledisplay" class="ui celled table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Temperature</th>
-                        <th>Humidity</th>
-                        <th>CO</th>
-                    </tr>
-                </thead>
-            <tbody>
-                <tr v-for="value in output | filterBy Date in 'Date' 'TEMP' 'HUMIDITY' 'CO' ">
-                    <td>{{values.Date}}</td>
-                    <td>{{values.TEMP}}</td>
-                    <td>{{values.HUMIDITY}}</td>
-                    <td>{{values.CO}}</td>
-                </tr>
-            </tbody>
-        </table>
-
-        
         <?php
         // Keyrir query. $sqlresult geymir nidurstoduna
         $sqlresult = mysqli_query($con, "SELECT * FROM value");
@@ -149,10 +120,80 @@
         // Close the database connection
         mysqli_close($con);
         ?>
+        
+        <!-- 
+
+        Jahni insertaðu grafinu þínu hingað ( ͡° ͜ʖ ͡°)
+
+        -->
+        
+        <!-- demo Search bar -->
+        <div id="demo">
+            <form id="search">
+                Search <input name="query" v-model="searchQuery">
+            </form>
+            <demo-grid
+            :data="gridData"
+            :columns="gridColumns"
+            :filter-key="searchQuery">
+            </demo-grid>
+        </div>
+        
+        <!-- component template -->
+        <script type="text/x-template" id="grid-template">
+            <table>
+                <thead>
+                    <tr>
+                        <th v-for="key in columns"
+                            @click="sortBy(key)"
+                            :class="{ active: sortKey == key }">
+                            {{ key | capitalize }}
+                            <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+                            </span>
+                        </th>
+                    </tr>
+                </thead>
+            <tbody>
+                <tr v-for="entry in filteredData">
+                    <td v-for="key in columns">
+                    {{entry[key]}}
+                    </td>
+                </tr>
+            </tbody>
+            </table>
+        </script>
+                
+            
+                
+                
+        <!-- 
+        SEARCH TABLE
+        <div id="filter-by-date">
+            <h4>Search:</h4><input v-model="name">
+        </div>
+        <table id="Tabledisplay" class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Temperature</th>
+                        <th>Humidity</th>
+                        <th>CO</th>
+                    </tr>
+                </thead>
+            <tbody>
+                <tr v-for="value in output | filterBy name in 'Date' 'TEMP' 'HUMIDITY' 'CO' ">
+                    <td>{{values.Date}}</td>
+                    <td>{{values.TEMP}}</td>
+                    <td>{{values.HUMIDITY}}</td>
+                    <td>{{values.CO}}</td>
+                </tr>
+            </tbody>
+        </table>
+        -->
+        <script src="https://unpkg.com/vue/dist/vue.js"></script>    
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/core.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script type="application/javascript" src="js/results.json"></script>
     </body>
 </html>
