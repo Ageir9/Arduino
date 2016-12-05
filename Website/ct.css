@@ -18,3 +18,8 @@ th #container-current{
     column-span:all;
     margin-right: 5%;
 }
+
+.linurit {
+	width: 400px;
+	height: 400px;
+}
