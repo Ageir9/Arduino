@@ -122,9 +122,9 @@
         
         
 
-        <canvas id="myChart" width="300" height="300"></canvas>
-        <canvas id="myChart1" width="300" height="300"></canvas>
-        <canvas id="myChart2" width="300" height="300"></canvas>
+        <canvas id="myChart" class="linurit" width="300" height="300"></canvas>
+        <canvas id="myChart1" class="linurit" width="300" height="300"></canvas>
+        <canvas id="myChart2" class="linurit" width="300" height="300"></canvas>
 
         
         
