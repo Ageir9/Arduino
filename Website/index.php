@@ -156,6 +156,6 @@
         <script src="http://code.jquery.com/jquery-3.1.1.js"></script>
         <script type="application/javascript" src="js/results.json"></script>
         <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
-        <script src="graph.js"></script>
+        <script src="js/graph.js"></script>
     </body>
 </html>
