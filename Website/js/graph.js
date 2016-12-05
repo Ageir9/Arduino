@@ -43,8 +43,8 @@ $( document ).ready(function() {
         console.log(hum_data);
     });
 
-    var ctx = $("#myChart1");
-    var scatterChart = new Chart(ctx, {
+    var ctx1 = $("#myChart1");
+    var scatterChart = new Chart(ctx1, {
         type: 'line',
         data: {
             datasets: [{
@@ -76,8 +76,8 @@ $( document ).ready(function() {
         console.log(CO_data);
     });
 
-    var ctx = $("#myChart2");
-    var scatterChart = new Chart(ctx, {
+    var ctx2 = $("#myChart2");
+    var scatterChart = new Chart(ctx2, {
         type: 'line',
         data: {
             datasets: [{
