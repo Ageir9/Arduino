@@ -120,11 +120,23 @@
         mysqli_close($con);
         ?>
         
-        
+        <div class="bil">
+            <div class= "linurit">
+                <canvas id="myChart" width="300" height="300"></canvas>
+            </div>
+        </div>
 
-        <canvas id="myChart" class="linurit" width="300" height="300"></canvas>
-        <canvas id="myChart1" class="linurit" width="300" height="300"></canvas>
-        <canvas id="myChart2" class="linurit" width="300" height="300"></canvas>
+        <div class="bil">
+            <div class= "linurit">
+                <canvas id="myChart1" width="300" height="300"></canvas>
+            </div>
+        </div>
+
+        <div class="bil">
+            <div class= "linurit">
+                <canvas id="myChart2" width="300" height="300"></canvas>
+            </div>
+        </div>
 
         
         

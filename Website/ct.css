@@ -22,4 +22,9 @@ th #container-current{
 .linurit {
 	width: 400px;
 	height: 400px;
+    float:left;
+}
+.bil {
+    float:left;
+    width: 450px;
 }
