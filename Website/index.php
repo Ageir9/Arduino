@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <title>/iVjLZDDc</title>
+    <title>Arduino</title>
         <meta charset="utf-8">
         <meta name="theme-color" content="#ffffff">
         <!-- refresh a 5 min fresti -->
-        <META HTTP-EQUIV="Refresh" CONTENT="360">
+        <META HTTP-EQUIV="Refresh" CONTENT="300">
         <!--favicon-->
         <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
         <link rel="favicon" type="image/png" href="favicon-32x32.png" sizes="32x32">
         <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
         <link rel="manifest" href="manifest.json">
         <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
-        <!--libraries-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css" />
         <link rel="stylesheet" type="text/css" href="ct.css">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/jq-2.2.0,dt-1.10.11,r-2.0.2/datatables.min.css"/>
     </head>
     <body>
         <?php
@@ -33,7 +31,7 @@
                 exit;
             }
 
-            //Býr til töflu í db ef hún er ekki til
+            // Byr til toflu i db ef hun er ekki til
             $createtable = "CREATE TABLE IF NOT EXISTS `value` (
               `CO` int(4) NOT NULL,
               `TEMP` int(4) NOT NULL,
@@ -43,6 +41,7 @@
               PRIMARY KEY (`id`)
             )";
             $crtable = mysqli_query($con, $createtable);
+            // debugging
             if ($crtable === TRUE){
                 echo '<script type="text/javascript">console.log("New table created");</script>';
             } else {
@@ -51,7 +50,7 @@
 
             // Keyrir query. $sqlresult geymir nidurstoduna
             $sqlresult = mysqli_query($con, "SELECT * FROM value");
-            // Hvert row verður gert að array ($row) í gegnum mysql_fetch_array
+            // Hvert row verður gert að array ($row) i gegnum mysql_fetch_array
             while($row = mysqli_fetch_array($sqlresult)) {
                 foreach($sqlresult as $value){
                  }
@@ -69,12 +68,11 @@
                     </tr>
                     <tr>
                         <?php
-                        //Birtir nyjustu gildin efst a sidunni
-                        //substring til að taka burt sekúndur, prentar út
+                        // Birtir nyjustu gildin efst a sidunni
+                        // substring tekur burt sekundur
                         echo '<td>' . substr($value['Date'], 0 , -3) . '</td>';
-                        //Setur warning ef eitthvað er of hátt.
+                        // Setur warning merki ef eitthvað er of hátt.
                         $warning = '<td class="error"><i class="attention icon"></i>';
-
                         if($value['TEMP'] >= 40){
                             echo $warning . $value['TEMP'] . '°C </td>';
                         } else{
@@ -95,7 +93,31 @@
                 </thead>
             </table>
         </div>
+        
+        <h3>10 Recent values</h3>
+        <table id="t101">
+        <tr>
+            <th>Date</th>
+            <th>Humidity (%)</th> 
+            <th>Temperature (°C)</th>
+            <th>CO level (ppm)</th>
+        </tr>
+        <tr>
+        
         <?php
+        // Keyrir query. $sqlresult geymir nidurstoduna
+        $sqlresult = mysqli_query($con, "SELECT * FROM value LIMIT 10");
+        // Loopar ur $sqlresult
+        // Hvert row verður gert að array ($row) i gegnum mysql_fetch_array
+        while($row = mysqli_fetch_array($sqlresult)) {
+            // Skrifar ut gildi (sem er núna i $row)
+            foreach($sqlresult as $value){
+                echo "<tr><td>" . substr($value['Date'], 0 , -3) . "<td>" . $value['HUMIDITY'] . "<td>" . $value['TEMP'] . "<td>" . $value['CO'] . "<td>" . "</td><tr>";
+             }
+        }
+        //loka töflunni
+        echo "</tr></table>";
+
         // Keyrir query. $sqlresult geymir nidurstoduna
         $sqlresult = mysqli_query($con, "SELECT * FROM value");
         $response = array();
@@ -107,19 +129,18 @@
             $HUMIDITY=$row['HUMIDITY'];
             $DATE=$row['Date'];
             $ID=$row['id'];
-            //býr til array
+            //Byr til array
             $posts[] = array('CO'=> $CO, 'TEMP'=> $TEMP, 'HUMIDITY'=> $HUMIDITY, 'Date'=> $DATE, 'id'=> $ID);
         }
         $response['values'] = $posts;
-        //Býr til .json file og skrifar í hann
+        // Byr til .json file og skrifar i hann
         $fp = fopen('js/results.json', 'w');
         fwrite($fp, json_encode($response));
         fclose($fp);
 
-        // Close the database connection
+        // Lokar database connection
         mysqli_close($con);
         ?>
-        
         <div class="bil">
             <div class= "linurit">
                 <canvas id="myChart" width="300" height="300"></canvas>
@@ -137,37 +158,12 @@
                 <canvas id="myChart2" width="300" height="300"></canvas>
             </div>
         </div>
-
-        
-        
-        <div id="filter-by-date">
-            <h4>Search:</h4><input v-model="name">
-        </div>
-        <table id="Tabledisplay" class="ui celled table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Temperature</th>
-                        <th>Humidity</th>
-                        <th>CO</th>
-                    </tr>
-                </thead>
-            <tbody>
-                <tr v-for="value in output | filterBy name in 'Date' 'TEMP' 'HUMIDITY' 'CO' ">
-                    <td>{{values.Date}}</td>
-                    <td>{{values.TEMP}}</td>
-                    <td>{{values.HUMIDITY}}</td>
-                    <td>{{values.CO}}</td>
-                </tr>
-            </tbody>
-        </table>
-    <script type="text/javascript" src="js/vue.js"></script>    
+        <!--libraries-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
-        <script src="http://code.jquery.com/jquery-3.1.1.js"></script>
         <script type="application/javascript" src="js/results.json"></script>
-        <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script></script>
         <script src="js/graph.js"></script>
     </body>
 </html>
